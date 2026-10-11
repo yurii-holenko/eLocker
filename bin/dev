@@ -9,6 +9,7 @@ docker compose up -d --wait db redis
 docker compose up -d worker
 
 bundle check > /dev/null || bundle install
+npm ls > /dev/null 2>&1 || npm install
 bin/rails db:prepare
 
 exec bin/rails server -p "${WEB_PORT:-3000}" "$@"

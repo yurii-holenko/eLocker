@@ -1,2 +1,54 @@
 en:
-  hello: "Hello world"
+  layout:
+    signed_in_as: Signed in as
+    switch: Switch
+    language: Language
+    support_group: eLocker support
+
+  lockers:
+    page_title: Lockers · eLocker
+    # Keyed by the action and the state the locker ended up in.
+    notices:
+      open:
+        open: "%{name} is now open."
+      close:
+        closed: "%{name} is now closed."
+      fail_attempt:
+        closed: "Wrong code for %{name}. Attempts left: %{remaining}."
+        blocked: "Too many wrong codes: %{name} is blocked for %{minutes} min."
+    # Keyed by the rejected action and the state the locker is in.
+    errors:
+      unknown_action: Unknown action.
+      open:
+        open: "%{name} is already open."
+        blocked: "%{name} is blocked. Only eLocker support can open it before the block ends."
+      close:
+        closed: "%{name} is already closed."
+        blocked: "%{name} is blocked."
+      fail_attempt:
+        open: "%{name} is already open."
+        closed: Support engineers open lockers without a code.
+        blocked: "%{name} is blocked."
+
+  # Everything under `react` is passed to the React components as the
+  # `translations` prop (see ApplicationController#page_props).
+  react:
+    lockers:
+      title: Lockers
+      empty: No lockers are available to you.
+      columns:
+        name: Locker
+        location: Location
+        company: Company
+        team: Team
+        state: State
+        action: Action
+      states:
+        open: Open
+        closed: Closed
+        blocked: Blocked
+      blocked_minutes_left: "%{minutes} min left"
+      actions:
+        open: Open
+        close: Close
+        fail_attempt: Wrong code

@@ -69,3 +69,8 @@
 .DS_Store
 Thumbs.db
 ._*
+
+# Shakapacker / React on Rails build output
+/public/packs
+/public/packs-test
+/ssr-generated
