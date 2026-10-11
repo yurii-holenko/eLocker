@@ -1,0 +1,50 @@
+uk:
+  layout:
+    signed_in_as: Користувач
+    switch: Змінити
+    language: Мова
+    support_group: Підтримка eLocker
+
+  lockers:
+    page_title: Локери · eLocker
+    notices:
+      open:
+        open: "%{name} відчинено."
+      close:
+        closed: "%{name} зачинено."
+      fail_attempt:
+        closed: "Невірний код для %{name}. Залишилось спроб: %{remaining}."
+        blocked: "Забагато невірних кодів: %{name} заблоковано на %{minutes} хв."
+    errors:
+      unknown_action: Невідома дія.
+      open:
+        open: "%{name} уже відчинено."
+        blocked: "%{name} заблоковано. До кінця блокування його може відчинити лише підтримка eLocker."
+      close:
+        closed: "%{name} уже зачинено."
+        blocked: "%{name} заблоковано."
+      fail_attempt:
+        open: "%{name} уже відчинено."
+        closed: Інженери підтримки відчиняють локери без коду.
+        blocked: "%{name} заблоковано."
+
+  react:
+    lockers:
+      title: Локери
+      empty: Немає доступних вам локерів.
+      columns:
+        name: Локер
+        location: Розташування
+        company: Компанія
+        team: Команда
+        state: Стан
+        action: Дія
+      states:
+        open: Відчинено
+        closed: Зачинено
+        blocked: Заблоковано
+      blocked_minutes_left: "ще %{minutes} хв"
+      actions:
+        open: Відчинити
+        close: Зачинити
+        fail_attempt: Невірний код

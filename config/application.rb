@@ -12,7 +12,6 @@ require "action_controller/railtie"
 # require "action_text/engine"
 require "action_view/railtie"
 # require "action_cable/engine"
-require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -29,8 +28,12 @@ module ELocker
 
     # config.time_zone = "Central Time (US & Canada)"
 
-    # Don't generate system test files.
-    config.generators.system_tests = nil
+    config.i18n.available_locales = %i[en uk]
+    config.i18n.default_locale = :en
+
+    config.generators do |g|
+      g.test_framework :rspec, view_specs: false, helper_specs: false, routing_specs: false
+    end
 
     # Background jobs go through Sidekiq (Redis)
     config.active_job.queue_adapter = :sidekiq

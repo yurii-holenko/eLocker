@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
     <title><%= content_for(:title) || "eLocker" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,11 +9,40 @@
 
     <%= yield :head %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= stylesheet_pack_tag "application" %>
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_pack_tag "application", defer: true %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar bg-body-tertiary border-bottom mb-4">
+      <div class="container">
+        <%= link_to "eLocker", root_path, class: "navbar-brand" %>
+
+        <div class="d-flex align-items-center gap-3">
+          <%= form_with url: session_path, method: :patch, class: "d-flex align-items-center gap-2" do |form| %>
+            <%= form.label :user_id, t("layout.signed_in_as"), class: "text-nowrap small text-body-secondary" %>
+            <%= form.select :user_id, user_switcher_options(current_user), {},
+                  class: "form-select form-select-sm", onchange: "this.form.requestSubmit()" %>
+            <noscript><%= form.submit t("layout.switch"), class: "btn btn-sm btn-outline-secondary" %></noscript>
+          <% end %>
+
+          <%= form_with url: locale_path, method: :patch, class: "d-flex align-items-center gap-2" do |form| %>
+            <%= form.select :locale, locale_switcher_options, {},
+                  class: "form-select form-select-sm", "aria-label": t("layout.language"),
+                  onchange: "this.form.requestSubmit()" %>
+            <noscript><%= form.submit t("layout.switch"), class: "btn btn-sm btn-outline-secondary" %></noscript>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-<%= type == "notice" ? "success" : "danger" %>" role="alert"><%= message %></div>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>
