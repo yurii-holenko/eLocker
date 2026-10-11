@@ -1,0 +1,68 @@
+# Default:            docker compose up          → postgres, redis, sidekiq worker
+#                      (run Rails on your machine: bin/dev)
+# Everything in Docker: docker compose --profile web up
+
+x-app: &app
+  build: .
+  volumes:
+    - .:/rails
+    - bundle:/usr/local/bundle
+  environment: &app-env
+    RAILS_ENV: development
+    DATABASE_HOST: db
+    DATABASE_PORT: 5432
+    DATABASE_USERNAME: postgres
+    DATABASE_PASSWORD: postgres
+    REDIS_URL: redis://redis:6379/0
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  worker:
+    <<: *app
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+
+  web:
+    <<: *app
+    profiles: ["web"]
+    command: ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    # Lets you attach for `debugger` breakpoints: docker attach $(docker compose ps -q web)
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+  redis_data:
+  bundle:
