@@ -1,0 +1,3 @@
+<% content_for :title, t("lockers.locker_page_title", name: @locker.name) %>
+
+<%= react_component("LockerPage", props: @props, prerender: true) %>

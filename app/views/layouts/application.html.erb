@@ -38,9 +38,7 @@
     </nav>
 
     <main class="container">
-      <% flash.each do |type, message| %>
-        <div class="alert alert-<%= type == "notice" ? "success" : "danger" %>" role="alert"><%= message %></div>
-      <% end %>
+      <%= react_component("FlashToasts", props: flash_toasts_props, prerender: true) if flash.any? %>
 
       <%= yield %>
     </main>

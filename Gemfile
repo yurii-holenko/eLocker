@@ -29,6 +29,8 @@ end
 
 group :development do
   gem "web-console"
+  # Warns about N+1 queries and unused eager loading
+  gem "bullet"
 end
 
 gem "shakapacker", "~> 10.3"

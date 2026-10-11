@@ -8,6 +8,13 @@ module ApplicationHelper
     grouped_options_for_select(groups.sort.to_h.transform_values { |members| members.map { |user| [ user.name, user.id ] } }, selected_user.id)
   end
 
+  def flash_toasts_props
+    {
+      messages: flash.map { |type, text| { type: type, text: text } },
+      closeLabel: t("layout.dismiss")
+    }
+  end
+
   # Each language is shown with its flag and its own name, whatever the current locale.
   LOCALE_LABELS = { en: "🇬🇧 English", uk: "🇺🇦 Українська" }.freeze
 

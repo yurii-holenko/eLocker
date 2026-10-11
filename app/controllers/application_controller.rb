@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
+  # Development builds the JS bundles on demand. Do it before the action, so
+  # React's server render never runs against a bundle older than the sources.
+  before_action { Shakapacker.compiler.compile } if Rails.env.development?
   around_action :switch_locale
 
   helper_method :current_user

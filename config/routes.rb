@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root "lockers#index"
 
-  resources :lockers, only: :index do
+  resources :lockers, only: %i[index show] do
     resources :actions, only: :create, controller: "locker_actions"
   end
 

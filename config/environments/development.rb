@@ -47,4 +47,13 @@ Rails.application.configure do
 
   # Allow the web console when the app runs inside Docker (requests come from the bridge network).
   config.web_console.permissions = [ "127.0.0.1", "::1", "172.16.0.0/12", "192.168.0.0/16" ]
+
+  # Report N+1 queries and unused eager loading: in the server log, in
+  # log/bullet.log and in a footer on the page.
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = true
+    Bullet.add_footer = true
+  end
 end
