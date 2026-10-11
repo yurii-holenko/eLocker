@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+# Remove a stale pid file left behind by a killed server
+rm -f /rails/tmp/pids/server.pid
+
+# Install any gems added since the image was built (also writes Gemfile.lock on first run)
+bundle check > /dev/null || bundle install
+
+# Create / migrate the database when starting the server
+if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  ./bin/rails db:prepare
+fi
+
+exec "${@}"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Run Rails on this machine; Postgres, Redis and the Sidekiq worker run in Docker.
+set -e
+cd "$(dirname "$0")/.."
+
+[ -f .env ] || { cp .env.example .env; echo "Created .env from .env.example"; }
+
+docker compose up -d --wait db redis
+docker compose up -d worker
+
+bundle check > /dev/null || bundle install
+bin/rails db:prepare
+
+exec bin/rails server -p "${WEB_PORT:-3000}" "$@"

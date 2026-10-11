@@ -1,0 +1,13 @@
+/.git/
+/.gitignore
+/.bundle
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/storage/*
+!/storage/.keep
+/public/assets
+/node_modules/
+/config/master.key
+/.env*
