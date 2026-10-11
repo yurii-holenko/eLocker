@@ -58,33 +58,38 @@ support = User.find_or_create_by!(name: "Sam Support") { |user| user.role = "sup
 if LockerAction.count < 30
   first_new_action = LockerAction.maximum(:id).to_i + 1
 
-  Team.includes(:users, :lockers).order(:id).each do |team|
-    employees = team.users.sort_by(&:id)
-    closed_lockers = team.lockers.select(&:closed?).sort_by(&:name)
+  # All or nothing: a failure must not leave half a history behind.
+  ActiveRecord::Base.transaction do
+    Team.includes(:users, :lockers).order(:id).each do |team|
+      employees = team.users.sort_by(&:id)
+      closed_lockers = team.lockers.select(&:closed?).sort_by(&:name)
 
-    closed_lockers.each_with_index do |locker, index|
-      employee = employees[index % employees.size]
+      closed_lockers.each_with_index do |locker, index|
+        employee = employees[index % employees.size]
 
-      locker.perform!("open", by: employee)
-      locker.perform!("close", by: employee)
-      # One wrong code is below every company's limit, so nothing gets blocked.
-      locker.perform!("fail_attempt", by: employee)
-      locker.perform!("open", by: index.even? ? employee : support)
-      # Leave every third locker open, so the list shows both states.
-      locker.perform!("close", by: employee) unless (index % 3).zero?
+        locker.perform!("open", by: employee)
+        locker.perform!("close", by: employee)
+        # One wrong code is below every company's limit, so nothing gets blocked.
+        locker.perform!("fail_attempt", by: employee)
+        locker.perform!("open", by: index.even? ? employee : support)
+        # Leave every third locker open, so the list shows both states.
+        locker.perform!("close", by: employee) unless (index % 3).zero?
+      end
     end
-  end
 
-  # One locker that was blocked by wrong codes and then opened by support.
-  blocked_once = Locker.find_by!(name: "DPD-HAM-006")
-  crew_member = blocked_once.team.users.first
-  blocked_once.company.settings.max_failed_attempts.times { blocked_once.perform!("fail_attempt", by: crew_member) }
-  blocked_once.perform!("open", by: support)
-  blocked_once.perform!("close", by: support)
+    # One locker that was blocked by wrong codes and then opened by support.
+    blocked_once = Locker.find_by!(name: "DPD-HAM-006")
+    crew_member = blocked_once.team.users.first
+    # The history above may already hold a wrong code of this user, so count on
+    # the outcome rather than on a fixed number of attempts.
+    blocked_once.perform!("fail_attempt", by: crew_member) until blocked_once.blocked?
+    blocked_once.perform!("open", by: support)
+    blocked_once.perform!("close", by: support)
 
-  # Spread the history over the last few days instead of "all just now".
-  new_actions = LockerAction.where(id: first_new_action..).order(:id).to_a
-  new_actions.each_with_index do |action, index|
-    action.update_columns(created_at: (new_actions.size - index).hours.ago)
+    # Spread the history over the last few days instead of "all just now".
+    new_actions = LockerAction.where(id: first_new_action..).order(:id).to_a
+    new_actions.each_with_index do |action, index|
+      action.update_columns(created_at: (new_actions.size - index).hours.ago)
+    end
   end
 end

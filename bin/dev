@@ -5,6 +5,11 @@ cd "$(dirname "$0")/.."
 
 [ -f .env ] || { cp .env.example .env; echo "Created .env from .env.example"; }
 
+# Use the ports from .env here too (WEB_PORT for the server started below).
+set -a
+. ./.env
+set +a
+
 # The JS bundler needs the Node version from .nvmrc; switch to it when nvm is
 # installed, then make sure whatever Node we ended up with is new enough.
 if [ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]; then
