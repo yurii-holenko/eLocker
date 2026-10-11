@@ -76,13 +76,16 @@ RSpec.describe "Locker page" do
       expect(response.body).not_to include("3 of 4", "4 of 4")
     end
 
-    it "shows at most the latest 50 actions" do
-      26.times { %w[open close].each { |kind| locker.perform!(kind, by: employee) } }
-
+    it "splits the history into pages of 20" do
+      11.times { %w[open close].each { |kind| locker.perform!(kind, by: employee) } }
       sign_in_as employee
-      get locker_path(locker)
 
-      expect(history_rows.size).to eq(50)
+      get locker_path(locker)
+      expect(history_rows.size).to eq(20)
+      expect(response.body).to include("Page 1 of 2", locker_path(locker, page: 2))
+
+      get locker_path(locker, page: 2)
+      expect(history_rows.size).to eq(2)
     end
   end
 

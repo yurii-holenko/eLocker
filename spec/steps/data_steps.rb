@@ -33,6 +33,18 @@ module DataSteps
     create(:user, :support, name: name)
   end
 
+  # | user | action | locker | times |    (times is optional)
+  # Actions are performed in the order listed, through the same code path
+  # the UI uses.
+  step "the following actions happened:" do |table|
+    table.hashes.each do |row|
+      locker = Locker.find_by!(name: row.fetch("locker"))
+      user = User.find_by!(name: row.fetch("user"))
+
+      (row["times"].presence || 1).to_i.times { locker.perform!(row.fetch("action").tr(" ", "_"), by: user) }
+    end
+  end
+
   # | name | team | state | location |    (state and location are optional;
   # state is closed, open or blocked)
   step "the following lockers:" do |table|

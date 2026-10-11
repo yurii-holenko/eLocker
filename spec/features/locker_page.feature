@@ -52,7 +52,7 @@ Feature: Locker page
     Then I should see the table:
       | Action     | User   |
       | Unblocked  | System |
-      | Blocked    | Dmytro |
+      | Blocked    | System |
       | Wrong code | Dmytro |
       | Wrong code | Dmytro |
 
@@ -68,7 +68,7 @@ Feature: Locker page
     And I should see the table:
       | Action     | User   |
       | Opened     | Sam    |
-      | Blocked    | Dmytro |
+      | Blocked    | System |
       | Wrong code | Dmytro |
       | Wrong code | Dmytro |
 

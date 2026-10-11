@@ -5,6 +5,13 @@ en:
     language: Language
     dismiss: Dismiss message
     support_group: eLocker support
+    footer: Smart lockers for your teams
+    nav:
+      lockers: Lockers
+      action_log: Action log
+
+  actions:
+    page_title: Action log · eLocker
 
   lockers:
     page_title: Lockers · eLocker
@@ -37,7 +44,14 @@ en:
   react:
     lockers:
       title: Lockers
-      empty: No lockers are available to you.
+      empty: No lockers found.
+      found: "Lockers found: %{count}"
+      filter:
+        search_placeholder: Locker name or location
+        state: State
+        all_states: All states
+        team: Team
+        all_teams: All teams
       columns:
         name: Locker
         location: Location
@@ -62,12 +76,31 @@ en:
         state: State
         attempts_left: Wrong codes left before blocking
         attempts_left_value: "%{left} of %{max}"
+    filter:
+      search: Search
+      apply: Filter
+      reset: Reset
+    table:
+      previous: Previous
+      next: Next
+      page_of: "Page %{page} of %{total}"
     history:
       title: History
+      log_title: Action log
+      found: "Actions found: %{count}"
       empty: No actions yet.
       system: System
+      filter:
+        search_placeholder: Locker or user name
+        locker: Locker
+        all_lockers: All lockers
+        kind: Action
+        all_kinds: All actions
+        user: User
+        all_users: All users
       columns:
         time: Time
+        locker: Locker
         action: Action
         user: User
       kinds:

@@ -2,7 +2,7 @@
 module NavigationSteps
   extend Turnip::DSL
 
-  PAGES = { "Lockers" => "/lockers" }.freeze
+  PAGES = { "Lockers" => "/lockers", "Action log" => "/actions" }.freeze
 
   # Authentication is mocked: signing in is picking a user in the header.
   step "I am signed in as :name" do |name|

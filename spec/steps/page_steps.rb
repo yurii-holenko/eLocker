@@ -7,8 +7,24 @@ module PageSteps
     click_button button
   end
 
+  step "I fill in :field with :value" do |field, value|
+    fill_in field, with: value
+  end
+
+  step "I select :option from :field" do |option, field|
+    select option, from: field
+  end
+
+  step "the :field select should offer :options" do |field, options|
+    expect(find_field(field).all("option").map(&:text)).to eq(options.split(/,\s*|\s+and\s+/))
+  end
+
   step "I follow :link" do |link|
     click_link link
+  end
+
+  step "I follow :link in the :row row" do |link, row|
+    within(:table_row_with, row) { click_link link }
   end
 
   step "I reload the page" do
@@ -39,6 +55,10 @@ module PageSteps
 
   step "the :row row should have no buttons" do |row|
     within(:table_row_with, row) { expect(page).to have_no_button }
+  end
+
+  step "the table should have :count row(s)" do |count|
+    expect(page).to have_css("table tbody tr", count: count.to_i)
   end
 
   # Compares the whole table: the header row names the columns to check.

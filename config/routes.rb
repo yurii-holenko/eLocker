@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     resources :actions, only: :create, controller: "locker_actions"
   end
 
+  # The action log: actions on every locker the user may see.
+  resources :actions, only: :index, controller: "locker_actions"
+
   resource :session, only: :update
   resource :locale, only: :update
 
