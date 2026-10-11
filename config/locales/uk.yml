@@ -5,6 +5,13 @@ uk:
     language: Мова
     dismiss: Сховати повідомлення
     support_group: Підтримка eLocker
+    footer: Розумні локери для ваших команд
+    nav:
+      lockers: Локери
+      action_log: Журнал дій
+
+  actions:
+    page_title: Журнал дій · eLocker
 
   lockers:
     page_title: Локери · eLocker
@@ -33,7 +40,14 @@ uk:
   react:
     lockers:
       title: Локери
-      empty: Немає доступних вам локерів.
+      empty: Локерів не знайдено.
+      found: "Знайдено локерів: %{count}"
+      filter:
+        search_placeholder: Назва локера або розташування
+        state: Стан
+        all_states: Усі стани
+        team: Команда
+        all_teams: Усі команди
       columns:
         name: Локер
         location: Розташування
@@ -58,12 +72,31 @@ uk:
         state: Стан
         attempts_left: Невірних кодів до блокування
         attempts_left_value: "%{left} з %{max}"
+    filter:
+      search: Пошук
+      apply: Фільтрувати
+      reset: Скинути
+    table:
+      previous: Назад
+      next: Далі
+      page_of: "Сторінка %{page} з %{total}"
     history:
       title: Історія
+      log_title: Журнал дій
+      found: "Знайдено дій: %{count}"
       empty: Дій ще не було.
       system: Система
+      filter:
+        search_placeholder: Назва локера або імʼя користувача
+        locker: Локер
+        all_lockers: Усі локери
+        kind: Дія
+        all_kinds: Усі дії
+        user: Користувач
+        all_users: Усі користувачі
       columns:
         time: Час
+        locker: Локер
         action: Дія
         user: Користувач
       kinds:

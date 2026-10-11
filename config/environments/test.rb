@@ -32,4 +32,7 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # A missing translation is a bug: fail loudly instead of showing a placeholder.
+  config.i18n.raise_on_missing_translations = true
 end

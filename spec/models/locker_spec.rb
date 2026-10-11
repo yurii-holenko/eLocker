@@ -59,6 +59,23 @@ RSpec.describe Locker do
     end
   end
 
+  describe ".search" do
+    let!(:berlin) { create(:locker, name: "AMZ-BER-001", location: "Berlin hub, bay 1") }
+    let!(:hamburg) { create(:locker, name: "DPD-HAM-001", location: "Hamburg central station") }
+
+    it "matches part of the name, ignoring case" do
+      expect(described_class.search("amz-ber")).to contain_exactly(berlin)
+    end
+
+    it "matches part of the location" do
+      expect(described_class.search("central")).to contain_exactly(hamburg)
+    end
+
+    it "treats LIKE wildcards as plain text" do
+      expect(described_class.search("%")).to be_empty
+    end
+  end
+
   describe ".accessible_to" do
     let(:team) { create(:team) }
     let!(:own_locker) { create(:locker, team: team) }
@@ -120,6 +137,7 @@ RSpec.describe Locker do
           expect(locker.reload).to be_blocked
           expect(locker.blocked_until).to eq(5.minutes.from_now)
           expect(locker.actions.order(:id).pluck(:kind)).to eq(%w[fail_attempt fail_attempt block])
+          expect(locker.actions.last).to have_attributes(kind: "block", user: nil) # done by the system
           expect(UnblockLockerJob).to have_been_enqueued.with(locker).at(5.minutes.from_now)
         end
       end

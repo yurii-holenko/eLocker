@@ -45,6 +45,28 @@ Feature: Lockers list
       | AMZ-101 | Amazon  | Night shift |
       | DPD-001 | DPD     | North crew  |
 
+  Scenario: The list is searched and filtered by state
+    Given I am signed in as "Alice"
+    When I select "Open" from "State"
+    And I press "Filter"
+    Then I should see the table:
+      | Locker  | State |
+      | AMZ-002 | Open  |
+    When I follow "Reset"
+    And I fill in "Search" with "amz-001"
+    And I press "Filter"
+    Then I should see the table:
+      | Locker  | State  |
+      | AMZ-001 | Closed |
+
+  Scenario: A support engineer filters the list by team
+    Given I am signed in as "Sam"
+    When I select "DPD · North crew" from "Team"
+    And I press "Filter"
+    Then I should see the table:
+      | Locker  | Company |
+      | DPD-001 | DPD     |
+
   Scenario: An employee opens and closes a locker
     Given I am signed in as "Alice"
     When I press "Open" in the "AMZ-001" row

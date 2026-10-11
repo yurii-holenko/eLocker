@@ -14,10 +14,14 @@
     <%= javascript_pack_tag "application", defer: true %>
   </head>
 
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <nav class="navbar bg-body-tertiary border-bottom mb-4">
       <div class="container">
-        <%= link_to "eLocker", root_path, class: "navbar-brand" %>
+        <div class="d-flex align-items-center gap-3">
+          <%= link_to "eLocker", root_path, class: "navbar-brand" %>
+          <%= link_to t("layout.nav.lockers"), lockers_path, class: "nav-link" %>
+          <%= link_to t("layout.nav.action_log"), actions_path, class: "nav-link" %>
+        </div>
 
         <div class="d-flex align-items-center gap-3">
           <%= form_with url: session_path, method: :patch, class: "d-flex align-items-center gap-2" do |form| %>
@@ -37,10 +41,17 @@
       </div>
     </nav>
 
-    <main class="container">
+    <main class="container flex-grow-1 pb-5">
       <%= react_component("FlashToasts", props: flash_toasts_props, prerender: true) if flash.any? %>
 
       <%= yield %>
     </main>
+
+    <footer class="border-top bg-body-tertiary py-3">
+      <div class="container small text-body-secondary d-flex justify-content-between">
+        <span>© <%= Date.current.year %> eLocker</span>
+        <span><%= t("layout.footer") %></span>
+      </div>
+    </footer>
   </body>
 </html>

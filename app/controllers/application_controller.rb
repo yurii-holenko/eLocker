@@ -27,4 +27,15 @@ class ApplicationController < ActionController::Base
   def page_props(**props)
     { translations: t("react"), csrfToken: form_authenticity_token, **props }
   end
+
+  # Props for the pagination links; the block turns a page number into a path.
+  def pagination_props(pagination)
+    {
+      page: pagination.page,
+      totalPages: pagination.total_pages,
+      totalCount: pagination.total_count,
+      previousPath: pagination.previous_page&.then { |page| yield page },
+      nextPath: pagination.next_page&.then { |page| yield page }
+    }
+  end
 end

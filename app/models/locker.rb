@@ -9,7 +9,7 @@ class Locker < ApplicationRecord
 
   belongs_to :team
   has_one :company, through: :team
-  has_many :actions, class_name: "LockerAction", dependent: :restrict_with_exception
+  has_many :actions, class_name: "LockerAction", inverse_of: :locker, dependent: :restrict_with_exception
 
   validates :name, presence: true, uniqueness: true
   validates :location, presence: true
@@ -17,6 +17,12 @@ class Locker < ApplicationRecord
   # The single place that decides which lockers a user may see or operate.
   # Every controller loads lockers through this scope.
   scope :accessible_to, ->(user) { user.support? ? all : where(team_id: user.team_id) }
+  # Case-insensitive match on the locker's name or location.
+  scope :search, ->(text) {
+    pattern = "%#{sanitize_sql_like(text)}%"
+
+    where("lockers.name ILIKE :pattern OR lockers.location ILIKE :pattern", pattern: pattern)
+  }
 
   # Every allowed state change is listed here; anything else raises.
   # Guards receive the acting user. `requires_lock` takes a row lock while an
@@ -59,7 +65,9 @@ class Locker < ApplicationRecord
       fire_and_log!(kind, by)
 
       if kind == "fail_attempt" && failed_attempts_left_for(by).zero?
-        fire_and_log!("block", by)
+        # Blocking is the system's reaction to the wrong codes, not something
+        # the user did, so it is logged without a user, like the unblock.
+        fire_and_log!("block", nil)
         UnblockLockerJob.set(wait_until: blocked_until).perform_later(self)
       end
     end

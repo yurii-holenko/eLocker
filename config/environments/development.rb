@@ -56,4 +56,7 @@ Rails.application.configure do
     Bullet.bullet_logger = true
     Bullet.add_footer = true
   end
+
+  # A missing translation is a bug: fail loudly instead of showing a placeholder.
+  config.i18n.raise_on_missing_translations = true
 end

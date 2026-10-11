@@ -57,11 +57,12 @@ API and no client-side routing, so this is not a separate SPA.
 | State change + action record | `Locker#perform!` |
 | Timed unblock of a blocked locker | `UnblockLockerJob` (Sidekiq) |
 | Props | `app/serializers` |
-| React pages (one per screen: lockers list, locker page) | `app/javascript/pages` |
+| React pages (one per screen: lockers list, locker page, action log) | `app/javascript/pages` |
+| Tables (TanStack Table) with server-side pagination | `app/javascript/components/tables`, `lib/pagination.rb` |
 | Reusable React components (buttons, tables) | `app/javascript/components` |
 | TypeScript types of the props Rails sends | `app/javascript/types` |
 | UI texts for Rails and React (`en`, `uk`) | `config/locales`; the `react` subtree is passed to React as props |
-| Tests, grouped by type | `spec/models`, `spec/requests`, `spec/jobs`, `spec/i18n`, `spec/features` |
+| Tests, grouped by type | `spec/models`, `spec/requests`, `spec/jobs`, `spec/lib`, `spec/i18n`, `spec/features` |
 | Client / server bundle entries | `app/javascript/packs` |
 | Mock sign-in (header dropdown) | `SessionsController`, `ApplicationController#current_user` |
 
@@ -93,7 +94,7 @@ Wrong codes are counted per user and locker, and reset when that user opens the 
 or the locker gets blocked. The limit and the block length are set per company
 in the `company_settings` table (`max_failed_attempts`, default 3; `block_duration_minutes`, default 10).
 In the seeds DPD uses 2 attempts and 1 minute, so the timed unblock is quick to try.
-Every event, including the system ones, is written to `locker_actions`.
+Every event is written to `locker_actions`; `block` and `unblock` are recorded as done by the system, without a user.
 
 ## Useful bits
 
