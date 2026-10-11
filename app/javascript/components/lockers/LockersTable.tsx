@@ -23,7 +23,9 @@ const LockersTable = ({ lockers }: { lockers: Locker[] }) => {
       <tbody>
         {lockers.map((locker) => (
           <tr key={locker.id}>
-            <td className="fw-semibold">{locker.name}</td>
+            <td className="fw-semibold">
+              <a href={locker.path}>{locker.name}</a>
+            </td>
             <td>{locker.location}</td>
             <td>{locker.company}</td>
             <td>{locker.team}</td>

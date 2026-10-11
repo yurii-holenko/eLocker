@@ -33,11 +33,15 @@ module DataSteps
     create(:user, :support, name: name)
   end
 
-  # | name | team | state |    (state is optional: closed, open or blocked)
+  # | name | team | state | location |    (state and location are optional;
+  # state is closed, open or blocked)
   step "the following lockers:" do |table|
     table.hashes.each do |row|
       traits = [ row["state"].presence&.to_sym ].compact - [ :closed ]
-      create(:locker, *traits, name: row.fetch("name"), team: Team.find_by!(name: row.fetch("team")))
+      attributes = { name: row.fetch("name"), team: Team.find_by!(name: row.fetch("team")) }
+      attributes[:location] = row["location"] if row["location"].present?
+
+      create(:locker, *traits, attributes)
     end
   end
 end

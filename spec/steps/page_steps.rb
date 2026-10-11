@@ -7,6 +7,14 @@ module PageSteps
     click_button button
   end
 
+  step "I follow :link" do |link|
+    click_link link
+  end
+
+  step "I reload the page" do
+    visit current_path
+  end
+
   step "I press :button in the :row row" do |button, row|
     within(:table_row_with, row) { click_button button }
   end

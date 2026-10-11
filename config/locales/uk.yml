@@ -3,10 +3,12 @@ uk:
     signed_in_as: Користувач
     switch: Змінити
     language: Мова
+    dismiss: Сховати повідомлення
     support_group: Підтримка eLocker
 
   lockers:
     page_title: Локери · eLocker
+    locker_page_title: "%{name} · eLocker"
     notices:
       open:
         open: "%{name} відчинено."
@@ -48,3 +50,25 @@ uk:
         open: Відчинити
         close: Зачинити
         fail_attempt: Невірний код
+      back: Усі локери
+      details:
+        location: Розташування
+        company: Компанія
+        team: Команда
+        state: Стан
+        attempts_left: Невірних кодів до блокування
+        attempts_left_value: "%{left} з %{max}"
+    history:
+      title: Історія
+      empty: Дій ще не було.
+      system: Система
+      columns:
+        time: Час
+        action: Дія
+        user: Користувач
+      kinds:
+        open: Відчинено
+        close: Зачинено
+        fail_attempt: Невірний код
+        block: Заблоковано
+        unblock: Розблоковано

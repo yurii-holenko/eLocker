@@ -57,7 +57,7 @@ API and no client-side routing, so this is not a separate SPA.
 | State change + action record | `Locker#perform!` |
 | Timed unblock of a blocked locker | `UnblockLockerJob` (Sidekiq) |
 | Props | `app/serializers` |
-| React pages (one per screen) | `app/javascript/pages` |
+| React pages (one per screen: lockers list, locker page) | `app/javascript/pages` |
 | Reusable React components (buttons, tables) | `app/javascript/components` |
 | TypeScript types of the props Rails sends | `app/javascript/types` |
 | UI texts for Rails and React (`en`, `uk`) | `config/locales`; the `react` subtree is passed to React as props |

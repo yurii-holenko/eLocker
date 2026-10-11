@@ -13,5 +13,13 @@ export interface Locker {
   team: string;
   company: string;
   availableActions: LockerActionKind[];
+  path: string;
   actionsPath: string;
+}
+
+// LockerSerializer#detailed_json, used on the locker's own page.
+export interface LockerDetails extends Locker {
+  maxFailedAttempts: number;
+  // null for support engineers, who open lockers without a code.
+  attemptsLeft: number | null;
 }

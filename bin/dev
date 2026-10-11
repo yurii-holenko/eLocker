@@ -5,6 +5,19 @@ cd "$(dirname "$0")/.."
 
 [ -f .env ] || { cp .env.example .env; echo "Created .env from .env.example"; }
 
+# The JS bundler needs the Node version from .nvmrc; switch to it when nvm is
+# installed, then make sure whatever Node we ended up with is new enough.
+if [ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]; then
+  set +e
+  . "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
+  nvm use > /dev/null
+  set -e
+fi
+node -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 20 ? 0 : 1)' || {
+  echo "Node $(node -v) is too old: the JS bundler needs Node 20.19+ (see .nvmrc). Run: nvm install" >&2
+  exit 1
+}
+
 docker compose up -d --wait db redis
 docker compose up -d worker
 
