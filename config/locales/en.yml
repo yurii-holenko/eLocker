@@ -1,0 +1,111 @@
+en:
+  layout:
+    signed_in_as: Signed in as
+    switch: Switch
+    language: Language
+    dismiss: Dismiss message
+    support_group: eLocker support
+    footer: Smart lockers for your teams
+    nav:
+      lockers: Lockers
+      action_log: Action log
+
+  actions:
+    page_title: Action log · eLocker
+
+  lockers:
+    page_title: Lockers · eLocker
+    locker_page_title: "%{name} · eLocker"
+    # Keyed by the action and the state the locker ended up in.
+    notices:
+      open:
+        open: "%{name} is now open."
+      close:
+        closed: "%{name} is now closed."
+      fail_attempt:
+        closed: "Wrong code for %{name}. Attempts left: %{remaining}."
+        blocked: "Too many wrong codes: %{name} is blocked for %{minutes} min."
+    # Keyed by the rejected action and the state the locker is in.
+    errors:
+      unknown_action: Unknown action.
+      open:
+        open: "%{name} is already open."
+        blocked: "%{name} is blocked. Only eLocker support can open it before the block ends."
+      close:
+        closed: "%{name} is already closed."
+        blocked: "%{name} is blocked."
+      fail_attempt:
+        open: "%{name} is already open."
+        closed: Support engineers open lockers without a code.
+        blocked: "%{name} is blocked."
+
+  # Everything under `react` is passed to the React components as the
+  # `translations` prop (see ApplicationController#page_props).
+  react:
+    lockers:
+      title: Lockers
+      empty: No lockers found.
+      found: "Lockers found: %{count}"
+      filter:
+        search_placeholder: Locker name or location
+        state: State
+        all_states: All states
+        team: Team
+        all_teams: All teams
+      columns:
+        name: Locker
+        location: Location
+        company: Company
+        team: Team
+        state: State
+        action: Action
+      states:
+        open: Open
+        closed: Closed
+        blocked: Blocked
+      blocked_minutes_left: "%{minutes} min left"
+      actions:
+        open: Open
+        close: Close
+        fail_attempt: Wrong code
+      back: All lockers
+      details:
+        location: Location
+        company: Company
+        team: Team
+        state: State
+        attempts_left: Wrong codes left before blocking
+        attempts_left_value: "%{left} of %{max}"
+    filter:
+      search: Search
+      apply: Filter
+      reset: Reset
+    table:
+      previous: Previous
+      next: Next
+      page_of: "Page %{page} of %{total}"
+    history:
+      title: History
+      log_title: Action log
+      found: "Actions found: %{count}"
+      empty: No actions yet.
+      system: System
+      filter:
+        search_placeholder: Locker or user name
+        locker: Locker
+        all_lockers: All lockers
+        kind: Action
+        all_kinds: All actions
+        user: User
+        all_users: All users
+      columns:
+        time: Time
+        locker: Locker
+        action: Action
+        user: User
+      kinds:
+        open: Opened
+        close: Closed
+        fail_attempt: Wrong code
+        block: Blocked
+        unblock: Unblocked

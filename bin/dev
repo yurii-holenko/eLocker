@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Run Rails on this machine; Postgres, Redis and the Sidekiq worker run in Docker.
+set -e
+cd "$(dirname "$0")/.."
+
+[ -f .env ] || { cp .env.example .env; echo "Created .env from .env.example"; }
+
+# Use the ports from .env here too (WEB_PORT for the server started below).
+set -a
+. ./.env
+set +a
+
+# The JS bundler needs the Node version from .nvmrc; switch to it when nvm is
+# installed, then make sure whatever Node we ended up with is new enough.
+if [ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]; then
+  set +e
+  . "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
+  nvm use > /dev/null
+  set -e
+fi
+node -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 20 ? 0 : 1)' || {
+  echo "Node $(node -v) is too old: the JS bundler needs Node 20.19+ (see .nvmrc). Run: nvm install" >&2
+  exit 1
+}
+
+docker compose up -d --wait db redis
+docker compose up -d worker
+
+bundle check > /dev/null || bundle install
+npm ls > /dev/null 2>&1 || npm install
+bin/rails db:prepare
+
+exec bin/rails server -p "${WEB_PORT:-3000}" "$@"

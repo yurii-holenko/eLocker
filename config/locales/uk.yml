@@ -1,0 +1,107 @@
+uk:
+  layout:
+    signed_in_as: Користувач
+    switch: Змінити
+    language: Мова
+    dismiss: Сховати повідомлення
+    support_group: Підтримка eLocker
+    footer: Розумні локери для ваших команд
+    nav:
+      lockers: Локери
+      action_log: Журнал дій
+
+  actions:
+    page_title: Журнал дій · eLocker
+
+  lockers:
+    page_title: Локери · eLocker
+    locker_page_title: "%{name} · eLocker"
+    notices:
+      open:
+        open: "%{name} відчинено."
+      close:
+        closed: "%{name} зачинено."
+      fail_attempt:
+        closed: "Невірний код для %{name}. Залишилось спроб: %{remaining}."
+        blocked: "Забагато невірних кодів: %{name} заблоковано на %{minutes} хв."
+    errors:
+      unknown_action: Невідома дія.
+      open:
+        open: "%{name} уже відчинено."
+        blocked: "%{name} заблоковано. До кінця блокування його може відчинити лише підтримка eLocker."
+      close:
+        closed: "%{name} уже зачинено."
+        blocked: "%{name} заблоковано."
+      fail_attempt:
+        open: "%{name} уже відчинено."
+        closed: Інженери підтримки відчиняють локери без коду.
+        blocked: "%{name} заблоковано."
+
+  react:
+    lockers:
+      title: Локери
+      empty: Локерів не знайдено.
+      found: "Знайдено локерів: %{count}"
+      filter:
+        search_placeholder: Назва локера або розташування
+        state: Стан
+        all_states: Усі стани
+        team: Команда
+        all_teams: Усі команди
+      columns:
+        name: Локер
+        location: Розташування
+        company: Компанія
+        team: Команда
+        state: Стан
+        action: Дія
+      states:
+        open: Відчинено
+        closed: Зачинено
+        blocked: Заблоковано
+      blocked_minutes_left: "ще %{minutes} хв"
+      actions:
+        open: Відчинити
+        close: Зачинити
+        fail_attempt: Невірний код
+      back: Усі локери
+      details:
+        location: Розташування
+        company: Компанія
+        team: Команда
+        state: Стан
+        attempts_left: Невірних кодів до блокування
+        attempts_left_value: "%{left} з %{max}"
+    filter:
+      search: Пошук
+      apply: Фільтрувати
+      reset: Скинути
+    table:
+      previous: Назад
+      next: Далі
+      page_of: "Сторінка %{page} з %{total}"
+    history:
+      title: Історія
+      log_title: Журнал дій
+      found: "Знайдено дій: %{count}"
+      empty: Дій ще не було.
+      system: Система
+      filter:
+        search_placeholder: Назва локера або імʼя користувача
+        locker: Локер
+        all_lockers: Усі локери
+        kind: Дія
+        all_kinds: Усі дії
+        user: Користувач
+        all_users: Усі користувачі
+      columns:
+        time: Час
+        locker: Локер
+        action: Дія
+        user: Користувач
+      kinds:
+        open: Відчинено
+        close: Зачинено
+        fail_attempt: Невірний код
+        block: Заблоковано
+        unblock: Розблоковано
